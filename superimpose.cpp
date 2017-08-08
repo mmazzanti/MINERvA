@@ -6,11 +6,12 @@ std::vector<TLegend*> legends;
 std::vector<TH1D*> plots;
 int legends_index=-1;
 int plot_index=0;
+int color_increm=6;
 
 
-void superimpose(const char* Hist_MC, const char* Hist_DATA){
+void superimpose(const char* file, const char* Hist_MC, const char* Hist_DATA){
   gStyle->SetOptStat(0);
-   TFile *FILE = new TFile("../comp/test.root","read");
+   TFile *FILE = new TFile(file,"read");
    loopdir(FILE->GetDirectory("/Limits"),Hist_MC,Hist_DATA,"");
    legends.at(legends_index)->Draw();
 }
@@ -48,7 +49,7 @@ void loopdir (TDirectory *dir, const char* Hist_MC, const char* Hist_DATA,char *
             plots.at(plot_index)->SetLineColor(hist_color);
             plots.at(plot_index)->Draw("SAME hist");
             legends.at(legends_index)->AddEntry(plots.at(plot_index),dir->GetName(),"l");
-            hist_color+=12;
+            hist_color+=color_increm;
           }
           else{
             if(legends_index>-1){
@@ -62,6 +63,7 @@ void loopdir (TDirectory *dir, const char* Hist_MC, const char* Hist_DATA,char *
             plot_index+=1;
             plots.push_back((TH1D*)key->ReadObj());
             plots.at(plot_index)->SetLineColor(hist_color);
+            hist_color+=color_increm;
             plots.at(plot_index)->Draw("SAME hist");
             plots.at(plot_index)->SetTitle(token);
             legends.at(legends_index)->AddEntry(plots.at(plot_index),dir->GetName(),"l");
