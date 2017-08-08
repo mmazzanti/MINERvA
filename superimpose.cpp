@@ -6,7 +6,6 @@ std::vector<TLegend*> legends;
 std::vector<TH1D*> plots;
 int legends_index=-1;
 int plot_index=0;
-ciao
 
 
 void superimpose(const char* Hist_MC, const char* Hist_DATA){
