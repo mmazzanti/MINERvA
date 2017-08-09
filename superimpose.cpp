@@ -11,6 +11,7 @@ int color_increm=6;
 
 void superimpose(const char* file, const char* Hist_MC, const char* Hist_DATA){
   gStyle->SetOptStat(0);
+  gStyle->SetLineScalePS(1);
    TFile *FILE = new TFile(file,"read");
    loopdir(FILE->GetDirectory("/Limits"),Hist_MC,Hist_DATA,"");
    legends.at(legends_index)->Draw();
