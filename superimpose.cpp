@@ -17,17 +17,30 @@ void superimpose(const char* file, const char* Hist_MC, const char* Hist_DATA){
    legends.at(legends_index)->Draw();
 }
 
+char* RemoveDigits(char* input)
+{
+    char* dest = input;
+    char* src = input;
+
+    while(*src)
+    {
+        if (isdigit(*src)) { src++; continue; }
+        *dest++ = *src++;
+    }
+    *dest = '\0';
+    return input;
+}
+
 void loopdir (TDirectory *dir, const char* Hist_MC, const char* Hist_DATA,char * prev) {
    const char delim[2] = "_";
    TIter next (dir->GetListOfKeys());
    TKey *key;
    char *token;
-   char *temp[50];
-    TH1D* temp_hist=NULL;
     while ((key = (TKey*)next())) {
       if (strcmp(key->GetClassName(),"TH1D")==0) {
-        strcpy (temp,dir->GetName());
-        token = strtok(temp,delim);
+        strcpy (token,dir->GetName());
+        //token = strtok(temp,delim);
+        RemoveDigits(token);
         if(!data_print){
         if (strcmp(key->GetName(),Hist_DATA)==0) {
           plot_index+=1;
