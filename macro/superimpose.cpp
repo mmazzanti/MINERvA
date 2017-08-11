@@ -18,17 +18,17 @@ Double_t max_hist=0;
 int first_hist=0;
 
 
-void superimpose(const char* file, const char* Hist_MC, const char* Hist_DATA, const char* print_folder){
+void superimpose(const char* file, const char* Hist_MC, const char* Hist_DATA, const char* print_folder, const char* extra_info){
   gStyle->SetOptStat(0);
   gStyle->SetLineScalePS(1);
    TFile *FILE = new TFile(file,"read");
    loopdir(FILE->GetDirectory("/Limits"),Hist_MC,Hist_DATA,"");
    legends.at(legends_index)->Draw();
-   PrintAllCanvases(Hist_MC,print_folder);
+   PrintAllCanvases(Hist_MC,print_folder,extra_info);
 }
 
 
-void PrintAllCanvases(char* Hist_MC,const char* print_folder){
+void PrintAllCanvases(char* Hist_MC,const char* print_folder,const char* extra_info){
 
   for(int i = 0; i < canvases.size(); i++) {
     string file_name(print_folder);
@@ -36,9 +36,8 @@ void PrintAllCanvases(char* Hist_MC,const char* print_folder){
     file_name+="_";
     file_name+=variables.at(i);
     file_name+="_";
-    file_name+="100k";
+    file_name+=extra_info;
     file_name+=".pdf";
-    cout << file_name << endl;
     (canvases.at(i))->Print(file_name.c_str(),"pdf");
   }
 
@@ -75,6 +74,7 @@ string format_name(string name){
     name.erase(name.size() - 1);}
     return name;
 }
+
 
 void loopdir (TDirectory *dir, const char* Hist_MC, const char* Hist_DATA,char * prev) {
    const char delim[2] = "_";
@@ -138,7 +138,6 @@ void loopdir (TDirectory *dir, const char* Hist_MC, const char* Hist_DATA,char *
             max_hist=plots.at(plot_index)->GetBinContent(plots.at(plot_index)->GetMaximumBin());
             hist_color+=color_increm;
             plots.at(plot_index)->Draw("SAME hist");
-            cout << token.c_str() << endl;
             plots.at(plot_index)->SetTitle(token.c_str());
             legends.at(legends_index)->AddEntry(plots.at(plot_index),dir->GetName(),"l");
             plots.at(0)->Draw("SAME hist");
