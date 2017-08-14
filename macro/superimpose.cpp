@@ -44,31 +44,19 @@ void PrintAllCanvases(char* Hist_MC,const char* print_folder,const char* extra_i
 }
 
 
-char* RemoveDigits(char* input)
-{
-    char* dest = input;
-    char* src = input;
-
-    while(*src)
-    {
-        if (isdigit(*src)) { src++; continue; }
-        if (*src=='-'|| *src=='.') { src++; continue; }
-        if (*src=='_') { *dest++ = ' '; src++; continue; }
-        *dest++ = *src++;
-    }
-    *dest = '\0';
-    return input;
-}
-
 string format_name(string name){
   string charToRemove(".-1234567890");
+  first_underscore=kFALSE;
         for(int i = 0; i< charToRemove.length();i++)
         {
+          if(name.find('_',0) || first_underscore){
+            first_underscore=kTRUE;
             int position = name.find(charToRemove.at(i),0);
             if (position > 0)
             {
               name.erase(position);
             }
+          }
         }
     if(name.at(name.size() - 1)=='_'){
     name.erase(name.size() - 1);}
