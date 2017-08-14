@@ -3,7 +3,8 @@
 #include <algorithm>
 #include <iostream>
 #include <string>
-Int_t hist_color=57;
+Int_t starting_color=51;
+Int_t hist_color=51;
 Bool_t data_print=kTRUE;
 Bool_t title_print=kFALSE;
 std::vector<TLegend*> legends;
@@ -13,7 +14,7 @@ std::vector<Int_t> n_entries;
 std::vector<TCanvas*> canvases;
 int legends_index=-1;
 int plot_index=0;
-int color_increm=6;
+int color_increm=9;
 Double_t max_hist=0;
 int first_hist=0;
 
@@ -46,16 +47,15 @@ void PrintAllCanvases(char* Hist_MC,const char* print_folder,const char* extra_i
 
 string format_name(string name){
   string charToRemove(".-1234567890");
-  first_underscore=kFALSE;
+  int First_underscore =name.find('_',0);
         for(int i = 0; i< charToRemove.length();i++)
         {
-          if(name.find('_',0) || first_underscore){
-            first_underscore=kTRUE;
-            int position = name.find(charToRemove.at(i),0);
-            if (position > 0)
+
+            int position = name.find(charToRemove.at(i),First_underscore);
+            while (position > 0)
             {
               name.erase(position);
-            }
+              position = name.find(charToRemove.at(i),First_underscore);
           }
         }
     if(name.at(name.size() - 1)=='_'){
@@ -91,7 +91,7 @@ void loopdir (TDirectory *dir, const char* Hist_MC, const char* Hist_DATA,char *
         if (strcmp(key->GetName(),Hist_MC)==0) {
           if (strcmp(token.c_str(),"nominal")==0) {
             plots.push_back((TH1D*)key->ReadObj());
-            plots.at(0)->SetLineColor(51);
+            plots.at(0)->SetLineColor(6);
           }
           else{
           if(strcmp(token.c_str(),prev)==0){
@@ -116,7 +116,7 @@ void loopdir (TDirectory *dir, const char* Hist_MC, const char* Hist_DATA,char *
             data_print=kFALSE;
             TLegend * legend= new TLegend(0.65,0.65,0.9,0.9);
             legends.push_back(legend);
-            hist_color=57;
+            hist_color=starting_color;
             first_hist=plot_index;
             plots.push_back((TH1D*)key->ReadObj());
             variables.push_back(token);
