@@ -1,0 +1,93 @@
+\documentclass[usenames,dvipsnames]{beamer}
+\usepackage[english]{babel}
+\usepackage{bookman}
+\usetheme{Boadilla}
+\usepackage{lmodern}% http://ctan.org/pkg/lm
+\usepackage{tikz}
+\usepackage{booktabs,dcolumn}
+\usepackage{tabularx}
+
+\usetikzlibrary{matrix,shapes,arrows,fit,tikzmark}
+\newcolumntype{.}{D{.}{.}{-1}}
+
+\begin{document}
+	
+	% Some options common to all the nodes and paths
+	\tikzset{   
+		every picture/.style={remember picture,baseline},
+		every node/.style={anchor=base,align=center,outer sep=1.5pt},
+		every path/.style={thick},
+	}
+	
+	\newcommand\marktopleft[1]{%
+		\tikz[overlay,remember picture] 
+		\node (marker-#1-a) at (.1em,.3em) {};%
+	}
+	\newcommand\markbottomright[1]{%
+		\tikz[overlay,remember picture] 
+		\node (marker-#1-b) at (.1em,.3em) {};%
+		\tikz[overlay,remember picture,inner sep=3pt]
+		\node[draw=red,rounded corners,fit=(marker-#1-a.north west) (marker-#1-b.south east)] {};%
+	}
+	
+	\title[Re-weighting of GENIE dials using the NUISANCE tool] %optional
+	{Re-weighting of GENIE dials using the NUISANCE tool}
+	
+	\author[Matteo Mazzanti]{Matteo Mazzanti}
+		\frame{\titlegraphic{}
+		\titlepage}
+	\begin{frame}
+	
+
+	
+	
+		\frametitle{The GENIE software}
+		GENIE is the main software used for Monte Carlo simulation for neutrino interaction. The main scope of my internship is to reduce some uncertainties on various parameters used to generate the Monte Carlo events. To do so the smartest way to proceed is "tuning" some of the parameters using the knowledge coming from data (took during the MINERvA experiment).
+		One can imagine the ensemble of events as zone in the N-dimensional parameter space:
+		
+		Due to the different possible models there are some uncertainties over the possible value of different parameters that can change the distribution of some observable.
+	\end{frame}
+
+\begin{frame}
+	\begin{table}
+		
+					\centering
+			\caption{nuiscomp 50k events}
+			\label{my-label}
+			\begin{tabular}{c|c|c}
+				\textbf{Dial} & \textbf{Execution time} & \textbf{Likelihood Joint FCN} \\
+				nominal      & 20s            & 350.246              \\
+				FrCEx\_N     & 23s            & 350.246              \\
+				FrInel\_N    & 24s            & 350.246              \\
+				FrAbs\_N     & 23s            & 350.246              \\
+				FrCEx\_pi    & 23s            & 350.246              \\
+				FrInel\_pi   & 24s            & 350.246              \\
+				FrAbs\_pi    & 25s            & 350.246              \\
+				FrElas\_N    & 25s            & 350.246              \\
+				FrPiProd\_N  & 22s            & 350.246              \\
+				FrElas\_pi   & 25s            & 350.246              \\
+				FrPiProd\_pi & 26s            & 350.246              \\
+				\marktopleft{a1}MFP\_N       & 143s           & 337.662           \\
+				MFP\_pi      & 242s           & 309.801              \\
+				FormZone     & 295s           & 337.248  \markbottomright{a1}           
+			\end{tabular}
+		
+	\end{table}
+\end{frame}
+
+\begin{frame}
+\textbf{card}\\
+\tiny{
+	genie\_parameter $<$param$>$  -1.0  -3.0  3.0  1.0  FIX\\~\\
+	
+	sample MINERvA\_CC1pip\_XSec\_1DTpi\_nu\_fluxcorr GENIE:/PATH/gntp.MINERvA\_fhc\_numu.CH.2500000.1.ghep.root\\
+	sample MINERvA\_CC1pip\_XSec\_1Dth\_nu\_2017 GENIE:/PATH/gntp.MINERvA\_fhc\_numu.CH.2500000.1.ghep.root\\
+	sample MINERvA\_CC1pip\_XSec\_1Dpmu\_nu\_2017 GENIE:/PATH/gntp.MINERvA\_fhc\_numu.CH.2500000.1.ghep.root\\
+	sample MINERvA\_CC1pip\_XSec\_1Dthmu\_nu\_2017 GENIE:/PATH/gntp.MINERvA\_fhc\_numu.CH.2500000.1.ghep.root\\
+	sample MINERvA\_CC1pip\_XSec\_1DQ2\_nu\_2017 GENIE/PATH/gntp.MINERvA\_fhc\_numu.CH.2500000.1.ghep.root\\
+	sample MINERvA\_CC1pip\_XSec\_1DEnu\_nu\_2017 GENIE:/PATH/gntp.MINERvA\_fhc\_numu.CH.2500000.1.ghep.root\\
+}	
+\end{frame}
+
+
+\end{document}
